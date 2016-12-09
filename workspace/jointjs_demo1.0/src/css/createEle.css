@@ -1,0 +1,75 @@
+/* elements */
+
+#myholder{
+	border: 1px solid lightgrey;
+}
+.devs .body {
+    fill: rgb(238,244,247);
+    stroke: rgb(43,142,209);
+    stroke-width: 2px;
+    z-index: 30;
+
+}
+
+.devs .label {
+    fill: grey;
+    font-size: 16px;
+}
+/*小圆圈*/
+.devs .port-body {
+    stroke: darkgrey;
+    stroke-width: 2px;
+    fill: #ffffff;
+}
+
+.devs .port-body:hover {
+    opacity: 1;
+    fill: #ff7e5d;
+}
+
+.devs .port-label {
+    fill: #7c68fc;
+}
+
+.devs.Atomic .body {
+    stroke: #feb663;
+}
+
+.devs.Atomic .label {
+    fill: #feb663;
+}
+
+
+
+/* links */
+
+.link .connection {
+    stroke: darkgray;
+    stroke-width: 2px;
+}
+
+/*.link .marker-arrowhead, .link .marker-vertex {
+    fill: #31D0C6;
+}
+.link .marker-arrowhead:hover {
+    fill: #F39C12;    
+}
+
+.link-tools .tool-remove circle {
+	stroke: lightgrey;
+    stroke-width: 3px;
+    fill: #FFFFFF;
+}*/
+/*
+ highlighting 
+
+.devs.highlighted-parent .body {
+    stroke: #fe854f;
+    transition: stroke 1s;
+}
+
+.devs.highlighted-parent .label {
+    fill: #fe854f;
+    transition: fill 1s;
+    text-decoration: underline;
+}*/

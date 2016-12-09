@@ -1,0 +1,34 @@
+[
+    {
+        "expName": "我的实验",
+        "experiments": [
+            "我的实验1",
+            "我的实验2",
+            "我的实验3"
+        ],
+        "boolean": true,
+        "null": null,
+        "number": 123,
+        "object": {
+            "a": "b",
+            "c": "d",
+            "e": "f"
+        }
+    },
+    {
+        "expName": "实验列表",
+        "experiments": [
+            "人口普查",
+            "金融风控",
+            "学历背景"
+        ],
+        "boolean": true,
+        "null": null,
+        "number": 123,
+        "object": {
+            "a": "b",
+            "c": "d",
+            "e": "f"
+        }
+    }
+]

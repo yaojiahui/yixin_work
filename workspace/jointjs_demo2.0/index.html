@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="dist/joint.css" />
+		<script src="jquery.min.js"></script>
+		<script src="lodash.min.js"></script>
+		<script src="backbone-min.js"></script>
+		<script src="dist/joint.js"></script>
+	</head>
+
+	<body>
+		<div id="paper"></div>
+
+	</body>
+	<script type="text/javascript">
+		joint.shapes.devs.TopBottomModel = joint.shapes.basic.Generic.extend({
+
+			markup: '<g class="rotatable"><g class="scalable"><rect class="body"/></g><rect class="imgcircle" /><image class="icon"/><text class="label"/><g class="inPorts"/><g class="outPorts"/></g>',
+			portMarkup: '<circle class="port-body"/>',
+
+			defaults: _.defaultsDeep({
+
+				type: 'devs.TopBottomModel',
+				size: {
+					width: 1,
+					height: 1
+				},
+
+				inPorts: [],
+				outPorts: [],
+
+				attrs: {
+					'.': {
+						magnet: false
+					},
+					'.body': {
+						width: 150,
+						height: 30,
+						stroke: 'black',
+						'rx': 15,
+						'ry': 150,
+					},
+					'.port-body': {
+						r: 6,
+						magnet: true,
+						stroke: 'black'
+					},
+					text: {
+						fill: 'black',
+						'pointer-events': 'none',
+						'y-alignment': 'middle',
+						'x-alignment': 'middle',
+					},
+					'.imgcircle': {
+						width: 40,
+						height: 40,
+						'ref-x': -5,
+						'ref-y': -5,
+						ref: '.body',
+						'rx': 20,
+						'ry': 20
+					},
+					'.icon': {
+						width: 40,
+						height: 40,
+						'ref-x': 0,
+						'ref-y': 0,
+						ref: '.imgcircle'
+					},
+					'.label': {
+						text: '',
+						'ref-x': 60,
+						'ref-y': .2,
+						'ref': '.body'
+					},
+
+					// CHANGED: find better positions for port labels 
+					// '.inPorts .port-label': {
+					// 	y: -15,
+					// 	x: 4
+					// },
+					// '.outPorts .port-label': {
+					// 	y: 25,
+					// 	x: 4
+					// }
+				},
+				ports: {
+					groups: {
+						'in': {
+							position: {
+								name: 'top'
+							},
+							attrs: {
+								'.port-label': {
+									fill: '#000'
+								},
+								'.port-body': {
+									fill: '#fff',
+									stroke: '#000',
+									r: 10,
+									magnet: true
+								}
+							},
+							label: {
+								position: {
+									name: 'top',
+									args: {
+										y: 10
+									}
+								}
+							}
+						},
+						'out': {
+							position: {
+								name: 'bottom'
+							},
+							attrs: {
+								'.port-label': {
+									fill: '#000'
+								},
+								'.port-body': {
+									fill: '#fff',
+									stroke: '#000',
+									r: 10,
+									magnet: true
+								}
+							},
+							label: {
+								position: {
+									name: 'bottom',
+									args: {
+										y: 10
+									}
+								}
+							}
+						}
+					}
+				}
+
+			}, joint.shapes.basic.Generic.prototype.defaults),
+
+			initialize: function() {
+
+				joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
+
+				this.on('change:inPorts change:outPorts', this.updatePortItems, this);
+				this.updatePortItems();
+			},
+
+			updatePortItems: function(model, changed, opt) {
+
+				// Make sure all ports are unique.
+				var inPorts = _.uniq(this.get('inPorts'));
+				var outPorts = _.difference(_.uniq(this.get('outPorts')), inPorts);
+
+				var inPortItems = this.createPortItems('in', inPorts);
+				var outPortItems = this.createPortItems('out', outPorts);
+
+				this.prop('ports/items', inPortItems.concat(outPortItems), _.extend({
+					rewrite: true
+				}, opt));
+			},
+
+			createPortItem: function(group, port) {
+
+				return {
+					id: port,
+					group: group,
+					attrs: {
+						'.port-label': {
+							text: port
+						}
+					}
+				};
+			},
+
+			createPortItems: function(group, ports) {
+
+				return _.map(ports, _.bind(this.createPortItem, this, group));
+			},
+
+			_addGroupPort: function(port, group, opt) {
+
+				var ports = this.get(group);
+				return this.set(group, _.isArray(ports) ? ports.concat(port) : [port], opt);
+			},
+
+			addOutPort: function(port, opt) {
+
+				return this._addGroupPort(port, 'outPorts', opt);
+			},
+
+			addInPort: function(port, opt) {
+
+				return this._addGroupPort(port, 'inPorts', opt);
+			},
+
+			_removeGroupPort: function(port, group, opt) {
+
+				return this.set(group, _.without(this.get(group), port), opt);
+			},
+
+			removeOutPort: function(port, opt) {
+
+				return this._removeGroupPort(port, 'outPorts', opt);
+			},
+
+			removeInPort: function(port, opt) {
+
+				return this._removeGroupPort(port, 'inPorts', opt);
+			},
+
+			_changeGroup: function(group, properties, opt) {
+
+				return this.prop('ports/groups/' + group, _.isObject(properties) ? properties : {}, opt);
+			},
+
+			changeInGroup: function(properties, opt) {
+
+				return this._changeGroup('in', properties, opt);
+			},
+
+			changeOutGroup: function(properties, opt) {
+
+				return this._changeGroup('out', properties, opt);
+			}
+		});
+
+		joint.shapes.devs.TopBottomModelView = joint.shapes.devs.ModelView;
+
+		var graph = new joint.dia.Graph;
+
+		var paper = new joint.dia.Paper({
+
+			el: document.getElementById('paper'),
+			width: 800,
+			height: 400,
+			gridSize: 1,
+			model: graph,
+			snapLinks: true,
+			linkPinning: false,
+			embeddingMode: true,
+			highlighting: {
+				'default': {
+					name: 'stroke',
+					options: {
+						padding: 6
+					}
+				},
+				'embedding': {
+					name: 'addClass',
+					options: {
+						className: 'highlighted-parent'
+					}
+				}
+			},
+
+			validateEmbedding: function(childView, parentView) {
+
+				return parentView.model instanceof joint.shapes.devs.Coupled;
+			},
+
+			validateConnection: function(sourceView, sourceMagnet, targetView, targetMagnet) {
+
+				return sourceMagnet != targetMagnet;
+			}
+		});
+
+		var connect = function(source, sourcePort, target, targetPort) {
+
+			var link = new joint.shapes.devs.Link({
+				source: {
+					id: source.id,
+					port: sourcePort
+				},
+				target: {
+					id: target.id,
+					port: targetPort
+				}
+			});
+
+			link.addTo(graph).reparent();
+		};
+
+		c1 = new joint.shapes.devs.TopBottomModel({
+			position: {
+				x: 230,
+				y: 50
+			},
+			size: {
+				width: 200,
+				height: 30
+			},
+			
+			attrs: {
+				'.label': {
+					text: '啊啊啊',
+				},
+				'.body': {
+					'rx': 15,
+					'ry': 15,
+				},
+				'.icon': {
+					'xlink:href': 'img/1.png'
+				},
+				'.imgcircle': {
+					fill: 'rgb(43,142,209)'
+				}
+			},
+		});
+
+		c1.set('inPorts', ['in']);
+		c1.set('outPorts', ['out 1', 'out 2']);
+		c1.position(300,300)
+
+		graph.addCells([c1]);
+
+		//		c1.embed(a1);
+		//
+		//		connect(a2, 'out', c1, 'in');
+		//		connect(c1, 'in', a1, 'xy');
+		//		connect(a1, 'x', c1, 'out 1');
+		//		connect(a1, 'y', c1, 'out 2');
+		//		connect(c1, 'out 1', a3, 'a');
+		//		connect(c1, 'out 2', a3, 'b');
+
+		/* rounded corners */
+
+//		_.each([c1], function(element) {
+//
+//			element.attr({
+//				'.body': {
+//					'rx': 6,
+//					'ry': 6
+//				}
+//			});
+//		});
+	</script>
+
+</html>

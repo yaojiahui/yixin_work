@@ -1,0 +1,109 @@
+http://gitlab.yxapp.xyz/pengjuzhang3/albus/blob/master/doc/albusAPI_latest.yaml
+
+
+实验
+http://10.100.67.201:8080/flowdef/get/all
+flowdef/put
+
+有根据实验ID获得所属所有node的接口
+http://10.100.67.201:8080/node/get/by_flowId/1
+
+获取所有数据源接口
+http://10.100.67.201:8080/node/getDataSource/all
+
+删除实验接口还需要删除那个的话，调用链接http://10.100.67.201:8080/flowdef/delete/by_flowId/29
+
+
+
+数据源 数据预处理 特征选择 模型都是node  但metaId不同
+node/get/by_nodeId/1
+
+
+node/put
+body 数据格式：JSON{appliacation/json}
+数据值：{"flowId":22,"metaNodeId":2,"arg":"{'table':'tags'}","srcDataId":2, "destDataId":4,"nodeName":"江湖救急", "horizon":700,"vertical":80}
+
+更新node需要添加nodeId，类似这样
+{"nodeId":1,"flowId":22,"metaNodeId":2,"arg":"{'table':'tags'}","srcDataId":2, "destDataId":4,"nodeName":"江湖救急", "horizon":700,"vertical":80}
+
+
+
+节点保存接口 http://10.100.67.201:8080/node/put
+
+
++--------------+-----------------+-----------+
+| meta_node_id | meta_node_name  | node_type |
++--------------+-----------------+-----------+
+|            1 | HDFS_read       |         1 |
+|            2 | Hive_read       |         1 |
+|            3 | Hbase_read      |         1 |
+|            4 | MySql_read      |         1 |
+|            5 | basic_filter    |         2 |
+|            6 | random_sampling |         2 |
+|            7 | feature_expand  |         3 |
+|            8 | LR_model        |         4 |
+|            9 | HDFS_write      |         5 |
++--------------+-----------------+-----------+
+
+nodeId 1 4 5 8,对应的meta id是 2， 5，7，9
+2 | Hive_read    5 | basic_filter    7 | feature_expand  9 | HDFS_write
+
+
+select * from data_location;
++---------+--------------+------------------------+------------------+
+| data_id | data_type_id | data_location          | data_name        |
++---------+--------------+------------------------+------------------+
+|       1 |            2 | /tmp                   | 临时文件夹       |
+|       2 |            2 | employee               | 进件表           |
+|       3 |            2 |                        | 空地址           |
+|       4 |            1 | /tmp/1/sparkEngineTest | HDFS存储地址     |
++---------+--------------+------------------------+------------------+
+
+
+flowrun/get/by_runId/5
+一个flowrun代表实验的一次执行，实验运行一次，后端会生成一个flowrun，这个接口就是通过flowrun的id获得指定的flowrun
+
+flowrun/start/by_defId/1执行一次实验
+
++--------------+----------------+
+| node_type_id | node_type_name |
++--------------+----------------+
+|            1 | reader         |
+|            2 | filter         |
+|            3 | expand         |
+|            4 | model          |
+|            5 | write          |
+|            6 | join           |
++--------------+----------------+
+
+数据源的metaNodeId是1,2,3,4
+预处理指定的metaNodeId是5和其他
+
+
+
+http://10.100.67.201:8080/node/cols/jianghujiuji     获得江湖救急数据源的colums
+
+http://10.100.67.201:8080/flowdef/get/sample  获得模板实验
+
+http://10.100.67.201:8080/flowdef/create/from/sample/1根据FlowId为1的模板实验，创建我的实验
+
+http://10.100.67.201:8080/feature/get/by_categories/1 这个是feature expand node，根据feature Id 来获得feature的。有了feature后，就可以让用户在前端选择用哪个了
+
+
+
+
+post
+http://10.100.67.201:8080/node/put
+{
+    "nodeId":8,
+    "flowId":1,
+    "metaNodeId":9,
+    "arg":"{'clos':'col1,clo2,col3...','filter':'...'}",
+    "srcDataId":3,
+    "destDataId":4,
+    "nodeName":"写HDFS",
+    "horizon":700,
+    "vertical":380
+}
+
+

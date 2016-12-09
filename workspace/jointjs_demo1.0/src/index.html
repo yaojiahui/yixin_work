@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/joint.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/createEle.css"/>
+		<script src="js/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/lib/lodash.min.js"></script>
+		<script src="js/lib/backbone-min.js"></script>
+		<script src="js/lib/joint.js"></script>
+	</head>
+
+	<body>
+		<div id="top">
+			<nav class="navbar">
+					<div class="top-left">
+						<a href="index.html" class="top-brand">Albus</a>
+					</div>
+
+					<div class="top-search">
+						<div class="top-search-left">
+							<span></span>
+							<span>我的实验</span>
+							<span>^</span>
+						</div>
+						<div class="top-search-input">
+
+							<input type="text">
+						</div>
+					</div>
+
+					<div class="top-right">
+						<div class="top-help user-circle">?</div>
+						<div class="top-user">
+							<div class="user-photo user-circle">
+								<img src="img/1.png" alt="">
+							</div>
+							<div class="user-name">
+								<span>jiahuiyao</span>
+							</div>
+						</div>
+
+					</div>
+
+				
+			</nav>
+		</div>
+		<div id="nav-fixed">
+			<div class="li-hide">
+				<div class="li-hide-table"></div>
+			</div>
+			<ul style="position: absolute;left: 0;top: 0;width: 100%;z-index: 30;">
+				
+				
+				<li class="fixed-li"><a href="#">
+					<div class="nav-fixed-img"></div>
+					<div class="nav-fixes-title">
+						<p>实验</p>
+					</div>
+				</a></li>
+				
+				<li class="fixed-li"><a href="#">
+					<div class="nav-fixed-img"></div>
+					<div class="nav-fixes-title">
+						<p>数据源</p>
+					</div>
+				</a></li>
+				
+				<li class="fixed-li"><a href="#">
+					<div class="nav-fixed-img"></div>
+					<div class="nav-fixes-title">
+						<p>数据预处理</p>
+					</div>
+				</a></li>
+				
+				<li class="fixed-li"><a href="#">
+					<div class="nav-fixed-img"></div>
+					<div class="nav-fixes-title">
+						<p>特征选择</p>
+					</div>
+				</a></li>
+				
+				<li class="fixed-li"><a href="#">
+					<div class="nav-fixed-img"></div>
+					<div class="nav-fixes-title">
+						<p>模型</p>
+					</div>
+				</a></li>
+				
+			</ul>
+		</div>
+
+		<div id="myholder-wrap">
+			<div id="myholder">
+				<div id="run-error">
+					未选择数据源
+					<span id="close">×</span>
+				</div>
+				<div id="myholder-foot">
+					<div class="myholder-foot-div">
+						<div class="foot-run-btn">
+							<span></span>
+							<span>运行</span>
+						</div>
+						
+					</div>
+					<div  class="myholder-foot-div">
+						<div class="foot-report-btn">
+							<span></span>
+							<span>报告</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="right-aside">
+			<div class="right-title">
+				实验属性
+			</div>
+			<div class="createTime">
+				<p>
+					创建日期:<span>2016-09-26</span>
+				</p>
+			</div>
+			<div class="right-form">
+				<div class="form-name">
+					<p>名称</p>
+					<input type="text" placeholder="请输入名称"/>
+				</div>
+				
+				<div class="form-des">
+					<p>描述</p>
+					<textarea></textarea>
+				</div>
+				
+			</div>
+		</div>
+
+	</body>
+	<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/drag.js" type="text/javascript" charset="utf-8"></script>
+	
+</html>

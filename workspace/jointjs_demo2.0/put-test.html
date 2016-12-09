@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<script type="text/javascript">
+			//		var dataString = {"nodeId":147,"flowId":53,"metaNodeId":5,"arg":"{\"cols\":[{\"name\":\"max_overdue_days\",\"type\":\"bigint\"},{\"name\":\"edu_study_years\",\"type\":\"bigint\"},{\"name\":\"sfz_id\",\"type\":\"bigint\"}],\"filter\":\"edu_study_years>2\"}","srcDataId":3,"destDataId":3,"nodeName":"基础Filter","featureIds":null,"horizon":350,"vertical":180,"runStatus":0,"incomingNodeIds":null,"outgoingNodeIds":null}
+			var dataString = {
+					"nodeId": 149,
+					"flowId": 53,
+					"metaNodeId": 8,
+					"arg": "{\"label\":\"max_overdue_days\",\"features\":[{\"name\":\"eduadv_degree_score\",\"type\":\"bigint\"},{\"name\":\"eduadv_degree_topup\",\"type\":\"bigint\"},{\"name\":\"eduadv_mode_parttime\",\"type\":\"bigint\"}],\"maxIter\":100,\"regParam\":0,\"elasticNetParam\":1,\"tol\":0.000001}",
+					"srcDataId": 3,
+					"destDataId": 4,
+					"nodeName": "LR Model",
+					"featureIds": null,
+					"horizon": 350,
+					"vertical": 380,
+					"runStatus": 0,
+					"incomingNodeIds": null,
+					"outgoingNodeIds": null
+				}
+				//			$.ajax({
+				//				type: "put",
+				//				url: "http://10.100.67.201:8080/node/put",
+				//				contentType: "application/json",
+				//				dataType: "json",
+				////				async: true,
+				//				data:JSON.stringify(dataString),
+				////				dataType: "application/json",
+				//				success: function(res) {
+				//					console.log(res)
+				//				}
+				//			})
+			$.ajax({
+				type: "get",
+				url: "http://10.100.67.201:8080/node/get/by_nodeId/8",
+				success: function(res) {
+					console.log(res)
+				}
+			})
+		</script>
+	</body>
+
+</html>
